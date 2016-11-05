@@ -14,52 +14,44 @@ var svg = d3.select('.chart')
     .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
 
-var data = [
-  { score: 63, subject: 'Mathematics' },
-  { score: 82, subject: 'Geography' },
-  { score: 74, subject: 'Spelling' },
-  { score: 97, subject: 'Reading' },
-  { score: 52, subject: 'Science' },
-  { score: 74, subject: 'Chemistry' },
-  { score: 97, subject: 'Physics' },
-  { score: 52, subject: 'ASL' }
-]
+d3.json('data/data.json', function (err, data) {
+  var yScale = d3.scaleLinear()
+    .domain(d3.extent(data, d => d.expectancy))
+    .range([height, 0])  // in SVG, y coordinate is top - bottom
+    .nice();
+  var yAxis = d3.axisLeft(yScale).ticks(5);  // ticks is a hint
+  svg.call(yAxis); // sufficient to draw an axis
 
+  var xScale = d3.scaleLinear()
+    .domain(d3.extent(data, d => d.cost))
+    .range([0, width])
+    .nice();
 
-var yScale = d3.scaleLinear()
-  .domain([0, 100])
-  .range([height, 0]);  // in SVG, y coordinate is top - bottom
+  var xAxis = d3.axisBottom(xScale)
+    .ticks(5);
 
-var yAxis = d3.axisLeft(yScale).ticks(5);  // ticks is a hint
-svg.call(yAxis); // sufficient to draw an axis
-
-var xScale = d3.scaleBand()
-  .padding(0.2)
-  // .paddingInner(0.2)
-  // .paddingOuter(0.3)
-  .domain(data.map(d => d.subject))
-  .range([0, width]);
-
-var xAxis = d3.axisBottom(xScale)
-  .ticks(5);
-
-svg
-  .append('g')
+  svg
+    .append('g')
     .attr('transform', `translate(0, ${height})`)
-  .call(xAxis)
-  .selectAll('text')
-  .style('text-anchor', 'end')
-  .attr('transform', 'rotate(-45)');
+    .call(xAxis);
 
-svg.selectAll('rect')
-  .data(data)
-  .enter()
-  .append('rect')
-    .attr('x', d => xScale(d.subject))
-    .attr('y', d => yScale(d.score))
-    .attr('width', d => xScale.bandwidth())
-    .attr('height', d => height - yScale(d.score))
-    // .style('fill', 'steelblue');
+  var rScale = d3.scaleSqrt()
+    .domain([0, d3.max(data, d => d.population)])
+    .range([0, 40]);
+
+  svg
+    .selectAll('circle')
+    .data(data)
+    .enter()
+    .append('circle')
+      .attr('cx', d => xScale(d.cost))
+      .attr('cy', d => yScale(d.expectancy))
+      .attr('r', d => rScale(d.population))
+      .style('fill', 'steelblue')
+      .style('fill-opacity', 0.5)
+      ;
+
+});
 
 function responsivefy(svg) {
   // get container + svg aspect ratio
