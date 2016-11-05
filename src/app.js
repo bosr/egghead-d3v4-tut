@@ -23,13 +23,11 @@ var bar = d3.select('.chart')
 bar.append('rect')
   .style('width', d => d.score)
   .attr('class', 'bar')
-  .on('click', () => console.log('hello'))
   .on('mouseover', function () {
-    console.log(this); // 'this' is the DOM ('rect') element being moused over
-    d3.select(this).style('fill', 'lightblue');
+    d3.select(this).classed('barOn', true);
   })
   .on('mouseout', function () {
-    d3.select(this).style('fill', 'lightgreen')
+    d3.select(this).classed('barOn', false)
   });
 
 // append a text element (with offset y) to each 'g' element of 'bar' selection
