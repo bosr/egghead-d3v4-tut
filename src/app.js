@@ -1,38 +1,26 @@
-// Loading data
-//
-// d3.json('data/data.json', function (data) {
-//   console.log(data);
-// });
+var div = d3.select('div');
+console.log(div.nodes());
 
-// d3.csv('data/data.csv', function (data) {
-//   console.log(data);
-// });
+var a = d3.select('a');
+console.log(a.nodes());
+var as = d3.selectAll('a');
+console.log(as.nodes());
 
-// d3.tsv('data/data.tsv', function (data) {
-//   console.log(data);
-// });
+var divLinks = div.selectAll('a');
+console.log(divLinks.nodes());
 
-d3.json('data/data.json', function (data) {
-  var min = d3.min(data, function (d) {
-    return d.age;
-  });
-  console.log(min);
+// using a css selector (or anything that is accepted by document.query.selector)
+console.log(d3.selectAll('div a').nodes());
 
-  var extent = d3.extent(data, function (d) {
-    return d.age;
-  });
-  console.log(extent);
 
-  var scale = d3.scaleLinear()
-    .domain(extent)
-    .range([0, 600]);
-  console.log(scale(24));
-  console.log(scale(38));
+var actionLink = d3.select('.action');
+console.log(actionLink.nodes());
 
-  // getting a set from the values
-  var ages = d3.set(data, function (d) {
-    return d.age;
-  });
-  console.log(ages);
-  console.log(ages.values());
-});
+var secondLink = d3.selectAll('a:nth-child(2)');
+console.log(secondLink.nodes());
+
+
+// turn a native list of nodes into a D3 Selection
+var allLinks = d3.selectAll(document.links);
+console.log(allLinks.nodes());
+console.log(allLinks.size());
