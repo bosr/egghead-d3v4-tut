@@ -1,12 +1,18 @@
+// https://sarasoueidan.com/tags/svg/index.html
+//
 // Margin convention for D3
-var margin = { top: 20, right: 10, bottom: 60, left: 40 };
-var width = 425 - margin.left - margin.right;
-var height = 625 - margin.top - margin.bottom;
+var margin = { top: 20, right: 10, bottom: 30, left: 40 };
+var width = 400 - margin.left - margin.right;
+var height = 600 - margin.top - margin.bottom;
+
+var fullWidth = width + margin.left + margin.right;
+var fullHeight = height + margin.top + margin.bottom;
 
 var svg = d3.select('.chart')
   .append('svg')
     .attr('width', width + margin.left + margin.right)
     .attr('height', height + margin.top + margin.bottom)
+    .attr('viewBox', `0 0 ${fullWidth} ${fullHeight}`)
   .append('g')
     .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
@@ -39,12 +45,7 @@ var xScale = d3.scaleTime()
   .range([0, width]);
 
 var xAxis = d3.axisBottom(xScale)
-  .ticks(3)
-  // .ticks(d3.timeMinute.every(45))
-  .tickSize(20);
-  // .tickSizeInner(10)
-  // .tickSizeOuter(20)
-  // .tickPadding(15)
+  .ticks(5);
 
 svg
   .append('g')
