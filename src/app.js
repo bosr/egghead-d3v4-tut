@@ -7,25 +7,18 @@ var scores = [
 ];
 
 // create a Data Join
-var update = d3.select('.chart')
-  .selectAll('div')
-  .data(scores, function (d) { // function(d) : "index function"
-    return d ? d.name : this.innerText;
-  })
-  .style('color', 'blue');
-
-var enter = update.enter()
-  .append('div')
-  .text(function (d) {
-    return d.name;
-  })
-  .style('color', 'green');
-
-update.exit().remove(); // will remove "Walter" from the nodes
-
-update.merge(enter)
-  .style('width', d => d.score + 'px')
-  .style('text-transform', 'uppercase')
-  .style('height', '50px')
-  .style('background', 'lightgreen')
-  .style('border', '1px solid black');
+d3.select('.chart')
+  .append('svg')
+    .attr('width', 225)  // svg elements have a default size
+    .attr('height', 300)
+  .selectAll('rect')
+  .data(scores)
+  .enter()
+    .append('rect')
+    .attr('y', (d, i) => i * 33)
+    .text(function (d) {
+      return d.name;
+    })
+    .style('width', d => d.score)
+    // .classed('bar', true)  // semantically means we will act on this (not the case here)
+    .attr('class', 'bar');
