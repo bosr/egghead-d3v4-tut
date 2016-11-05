@@ -23,11 +23,19 @@ var bar = d3.select('.chart')
 bar.append('rect')
   .style('width', d => d.score)
   .attr('class', 'bar')
-  .on('mouseover', function () {
-    d3.select(this).classed('barOn', true);
+  .on('mouseover', function (d, i, elements) { // all native elements of bar
+    d3.select(this)
+      .style('transform', 'scaleX(2)');
+    d3.selectAll(elements)
+      .filter(':not(:hover)')
+      .style('fill-opacity', 0.5);
   })
-  .on('mouseout', function () {
-    d3.select(this).classed('barOn', false)
+  .on('mouseout', function (d, i, elements) { // 'd' is the data
+    d3.select(this)
+      .style('transform', 'scaleX(1)');
+    d3.selectAll(elements)
+      .filter(':not(:hover)')
+      .style('fill-opacity', 1);
   });
 
 // append a text element (with offset y) to each 'g' element of 'bar' selection
