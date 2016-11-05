@@ -19,23 +19,35 @@ var bar = d3.select('.chart')
     .append('g')
     .attr('transform', (d, i) => 'translate(0, ' + i * 33 + ')');
 
+function scaleBar (selection, scale) {
+  selection.style('transform', 'scaleX(' + scale + ')');
+}
+
+function fade (selection, opacity) {
+  selection
+    .filter(':not(:hover)')
+    .style('fill-opacity', opacity);
+}
+
+function setColor (selection, color) {
+  selection.style('fill', color);
+}
+
 // append a rect to each 'g' element of 'bar' selection
 bar.append('rect')
   .style('width', d => d.score)
   .attr('class', 'bar')
   .on('mouseover', function (d, i, elements) { // all native elements of bar
-    d3.select(this)
-      .style('transform', 'scaleX(2)');
+    d3.select(this).call(scaleBar, 2);
     d3.selectAll(elements)
-      .filter(':not(:hover)')
-      .style('fill-opacity', 0.5);
+      .call(setColor, 'teal')
+      .call(fade, 0.5);
   })
   .on('mouseout', function (d, i, elements) { // 'd' is the data
-    d3.select(this)
-      .style('transform', 'scaleX(1)');
+    d3.select(this).call(scaleBar, 1);
     d3.selectAll(elements)
-      .filter(':not(:hover)')
-      .style('fill-opacity', 1);
+      .call(setColor, 'lightgreen')
+      .call(fade, 1);
   });
 
 // append a text element (with offset y) to each 'g' element of 'bar' selection
