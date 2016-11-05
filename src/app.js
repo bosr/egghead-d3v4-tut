@@ -6,19 +6,27 @@ var scores = [
   { name: 'Emily', score: 88 }
 ];
 
-// create a Data Join
-d3.select('.chart')
+// 'g' are SVG analogs of 'div'
+
+// bar is now a selection of abstract 'g' elements
+var bar = d3.select('.chart')
   .append('svg')
     .attr('width', 225)  // svg elements have a default size
     .attr('height', 300)
-  .selectAll('rect')
+  .selectAll('g')
   .data(scores)
   .enter()
-    .append('rect')
-    .attr('y', (d, i) => i * 33)
-    .text(function (d) {
-      return d.name;
-    })
-    .style('width', d => d.score)
-    // .classed('bar', true)  // semantically means we will act on this (not the case here)
-    .attr('class', 'bar');
+    .append('g')
+    .attr('transform', (d, i) => 'translate(0, ' + i * 33 + ')');
+
+// append a rect to each 'g' element of 'bar' selection
+bar.append('rect')
+  .style('width', d => d.score)
+  .attr('class', 'bar');
+
+// append a text element (with offset y) to each 'g' element of 'bar' selection
+bar.append('text')
+  .attr('y', 20)
+  .text(function (d) {
+    return d.name;
+  });
