@@ -22,7 +22,15 @@ var bar = d3.select('.chart')
 // append a rect to each 'g' element of 'bar' selection
 bar.append('rect')
   .style('width', d => d.score)
-  .attr('class', 'bar');
+  .attr('class', 'bar')
+  .on('click', () => console.log('hello'))
+  .on('mouseover', function () {
+    console.log(this); // 'this' is the DOM ('rect') element being moused over
+    d3.select(this).style('fill', 'lightblue');
+  })
+  .on('mouseout', function () {
+    d3.select(this).style('fill', 'lightgreen')
+  });
 
 // append a text element (with offset y) to each 'g' element of 'bar' selection
 bar.append('text')
