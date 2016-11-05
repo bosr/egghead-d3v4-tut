@@ -39,17 +39,31 @@ d3.json('data/data.json', function (err, data) {
     .domain([0, d3.max(data, d => d.population)])
     .range([0, 40]);
 
-  svg
-    .selectAll('circle')
+  var circles = svg
+    .selectAll('.ball')
     .data(data)
     .enter()
+    .append('g')
+      .attr('class', 'ball')
+      .attr('transform', d => {
+        return `translate(${xScale(d.cost)}, ${yScale(d.expectancy)})`;
+      });
+
+  circles
     .append('circle')
-      .attr('cx', d => xScale(d.cost))
-      .attr('cy', d => yScale(d.expectancy))
+      .attr('cx', d => 0)
+      .attr('cy', d => 0)
       .attr('r', d => rScale(d.population))
       .style('fill', 'steelblue')
       .style('fill-opacity', 0.5)
       ;
+
+  circles
+    .append('text')
+    .style('text-anchor', 'middle')
+    .style('fill', 'black')
+    .attr('y', 4)
+    .text(d => d.code);
 
 });
 
