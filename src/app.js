@@ -1,19 +1,15 @@
-var secondLink = d3.selectAll('a:nth-child(2)');
-console.log(secondLink.nodes());
-
-// read attribute
-console.log(secondLink.attr('href'));
-
-// create or update attribute
-secondLink.attr('href', 'http://www.google.com');
-secondLink.style('color', 'green');
-console.log(secondLink.attr('href'));
-
-// more idiomatic
-d3.selectAll('a:nth-child(3)')
-  .attr('href', 'http://www.bing.com')
-  // .style('color', 'pink')
-  .classed('red', true)
-  // .text('Inventory')
-  .html('Inventory <b>SALE</b>')
+d3.select('.title')
+  .insert('button', 'a:nth-child(2)') // 'before' function
+    .html('I am a button')
   ;
+
+d3.select('.title')
+  .append('div')
+    .style('color', 'red')
+    .html('Inventory <b>SALE</b>')
+  .append('button')
+    .style('display', 'block')
+    .text('submit')
+  ;
+
+d3.select('.action').remove();
