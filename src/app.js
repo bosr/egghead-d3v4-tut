@@ -1,15 +1,31 @@
-d3.select('.title')
-  .insert('button', 'a:nth-child(2)') // 'before' function
-    .html('I am a button')
-  ;
+var scores = [
+  { name: 'Alice', score: 96 },
+  { name: 'Billy', score: 83 },
+  { name: 'Cindy', score: 91 },
+  { name: 'David', score: 96 },
+  { name: 'Emily', score: 88 }
+];
 
-d3.select('.title')
+// create a Data Join
+var update = d3.select('.chart')
+  .selectAll('div')
+  .data(scores, function (d) { // function(d) : "index function"
+    return d ? d.name : this.innerText;
+  })
+  .style('color', 'blue');
+
+var enter = update.enter()
   .append('div')
-    .style('color', 'red')
-    .html('Inventory <b>SALE</b>')
-  .append('button')
-    .style('display', 'block')
-    .text('submit')
-  ;
+  .text(function (d) {
+    return d.name;
+  })
+  .style('color', 'green');
 
-d3.select('.action').remove();
+update.exit().remove(); // will remove "Walter" from the nodes
+
+update.merge(enter)
+  .style('width', d => d.score + 'px')
+  .style('text-transform', 'uppercase')
+  .style('height', '50px')
+  .style('background', 'lightgreen')
+  .style('border', '1px solid black');
